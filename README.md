@@ -1,6 +1,6 @@
 # ERC20SecurityLockExtension
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+An abstract contract, that can be added to any ERC20 token, to protect holders from wallet hacks. The idea behind this extension is to bring the protection, the use of multi signature wallet brings, but also keep the felxibility single signature wallets have, to all ERC20 tokens.
 
 ## Available Scripts
 
