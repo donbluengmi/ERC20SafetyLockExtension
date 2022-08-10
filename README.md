@@ -1,10 +1,15 @@
 # ERC20SecurityLockExtension
 
-An abstract contract, that can be added to any ERC20 token, to protect holders from wallet hacks. The idea behind this extension is to bring the protection, the use of multi signature wallet brings, but also keep the felxibility single signature wallets have, to all ERC20 tokens.
+An abstract contract, that can be added to any ERC20 token, to protect tokens from wallet hacks. The idea behind this extension is to bring the protection, the use of multi signature wallet brings, but also keep the felxibility single signature wallets have, to all ERC20 tokens.
 
-## Available Scripts
+## Thought behind it
 
-In the project directory, you can run:
+Wallet hacks, due to the widespread use of browser extensions, have gotten rather common in the space and its just to be seen how more frequent these will occur in the future, keeping the massive financial values at stake, in mind. Additionally, using wallets safely, by keeping them as cold as possible, or using multi signature wallets, with cold wallets as signers, while also keeping the comfort of just transfering things quickly, is not compatible.
+
+Tokens that have this extension implemented, and whose holders have decided to secure their tokens, are not prone to any kind of wallet hacks.
+This is achieved by holders being able to specify a token specific lockaddress that can decide, just as the token holder can, to lock the holders tokens. If locked by one party, the other party wont be able to transfer the holders tokens (for the lockaddress only through the transferfrom function, according to ERC20 anyway).
+
+Any scenario, in which an attacker has access to either the token holders wallet, or the lockaddress and is trying to 
 
 ### `npm start`
 
