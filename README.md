@@ -24,3 +24,18 @@ Add the abstract contract "ERC20SecurityExtension" to your contract and add the 
         emit Transfer(msg.sender, recipient, amount);
         return true;
     }
+    
+and so:
+
+        function transferFrom(address sender, address recipient, uint256 amount) external lockedtransfer(msg.sender, amount, sender, recipient) override returns (bool) {
+        require(allowances[sender][msg.sender] >= amount);
+
+        allowances[sender][msg.sender] - amount;
+
+        balances[msg.sender] = balances[sender] - amount;
+        balances[recipient] = balances[recipient] + amount;
+                
+        emit Transfer(sender, recipient, amount);
+        return true;
+
+    }
