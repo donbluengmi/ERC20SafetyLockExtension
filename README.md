@@ -11,6 +11,8 @@ This is achieved by holders being able to specify a token specific lockaddress t
 
 Any scenario, in which an attacker is trying to either transfer tokens, or block transactions on either wallet, is solvable with this extension.
 
+This extension largely fails its cause, if users arent specifically cautious using the lockaddress´s account.
+
 ### `npm start`
 
 Runs the app in the development mode.\
