@@ -9,7 +9,7 @@ Wallet hacks, due to the widespread use of browser extensions, have gotten rathe
 Tokens that have this extension implemented, and whose holders have decided to secure their tokens, are not prone to any kind of wallet hacks.
 This is achieved by holders being able to specify a token specific lockaddress that can decide, just as the token holder can, to lock the holders tokens. If locked by one party, the other party wont be able to transfer the holders tokens (for the lockaddress only through the transferfrom function, according to ERC20 anyway).
 
-Any scenario, in which an attacker has access to either the token holders wallet, or the lockaddress and is trying to 
+Any scenario, in which an attacker is trying to either transfer tokens, or block transactions on either wallet, is solvable with this extension.
 
 ### `npm start`
 
