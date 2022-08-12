@@ -15,7 +15,7 @@ This extension largely fails its cause, if users arent specifically cautious usi
 
 ## Implementation
 
-Add the abstract contract "ERC20SecurityExtension" to your contract and add the modifier lockedtransfer in the functions transfer and transferfrom like so:
+Add the abstract contract "ERC20SecurityExtension" to your contract and add the modifier "lockedtransfer" in the functions transfer and transferfrom like so:
 
         function transfer(address recipient, uint256 amount) external lockedtransfer(msg.sender, amount, msg.sender, recipient) override returns (bool) {
         balances[msg.sender] = balances[msg.sender] - amount;
