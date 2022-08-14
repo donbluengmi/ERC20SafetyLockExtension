@@ -109,7 +109,8 @@ abstract contract multisig {
   function getpersonallock(address holder) external view returns (bool){
       return transferunallowed[msg.sender][holder];
   }
-
+  
+}
   
 
 pragma solidity ^0.8.0;
