@@ -16,7 +16,7 @@ This extension largely fails its cause, if users arent specifically cautious usi
 ## Implementation
 
 Add the abstract contract "ERC20SecurityExtension" to your contract and add the modifier "lockedtransfer" in the functions transfer and transferfrom like so:
-
+```C
         function transfer(address recipient, uint256 amount) external lockedtransfer(msg.sender, amount, msg.sender, recipient) override returns (bool) {
         balances[msg.sender] = balances[msg.sender] - amount;
         balances[recipient] = balances[recipient] + amount;
@@ -24,6 +24,7 @@ Add the abstract contract "ERC20SecurityExtension" to your contract and add the 
         emit Transfer(msg.sender, recipient, amount);
         return true;
     }
+```
     
 and so:
 
