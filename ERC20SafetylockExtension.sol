@@ -14,7 +14,7 @@ abstract contract multisig {
     mapping(address => address) lockaddress;
     mapping(address => mapping(address => bool)) transferallowed;
     mapping(address => mapping(address => bool)) safemode;
-    mapping(address => mapping(address => bool)) immunityrequest;
+    mapping(address => mapping(address => mapping(address => bool))) immunerecipientrequest;
     mapping(address => mapping(address => bool)) immunerecipient;
     mapping(address => mapping(address => mapping(address => bool))) lockaddresschangeallowed;
 
@@ -124,14 +124,14 @@ abstract contract multisig {
   */
   
 
-  function requestimmuneaddress(address holder, address immune) {
-    if(msg.sender = holder || lockaddress[holder]) {
+  function requestimmuneaddress(address holder, address immune) external {
+    if(msg.sender == holder || msg.sender == lockaddress[holder]) {
         immunerecipientrequest[msg.sender][holder][immune] = true;
     }
   }
 
-  function setimmuneaddress(address holder, address immune) external innerabstract() {
-    require(immunerecipientrequest[lockaddress[holder]][holder][immune] || immunerecipientrequest[holder][holder][immune])
+  function setimmuneaddress(address holder, address immune) external innerabstract(holder) {
+    require(immunerecipientrequest[lockaddress[holder]][holder][immune] || immunerecipientrequest[holder][holder][immune]);
         if(msg.sender == holder) {
             if(immunerecipientrequest[lockaddress[holder]][holder][immune] = true) {
                 immunerecipient[holder][immune] = true;
@@ -139,10 +139,9 @@ abstract contract multisig {
         } else {
             immunerecipientrequest[holder][holder][immune] = true;
             }
-            immunerecipientrequest[lockaddress[holder][holder][immune]] = false;
+            immunerecipientrequest[lockaddress[holder]][holder][immune] = false;
             immunerecipientrequest[holder][holder][immune] = false;          
         }
-}
 
   function getlockexistence(address holder) public view returns (bool) {
     return lockexistent[holder];
@@ -243,9 +242,4 @@ contract IERC20MintableExampleToken is IERC20, multisig {
         emit Transfer(zeroaddress, msg.sender, mintvalue);
         return true;
     }
-
-
-
-
-
 }
