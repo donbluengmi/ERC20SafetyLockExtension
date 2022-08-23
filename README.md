@@ -17,7 +17,7 @@ This extension largely fails its cause, if users arent specifically cautious usi
 
 Add the abstract contract "ERC20SecurityExtension" to your contract and add the modifier "lockedtransfer" in the functions transfer and transferfrom like so:
 ```solidity
-   function transfer(address recipient, uint256 amount) external lockedtransfer(msg.sender, amount, msg.sender, recipient) override returns (bool) {
+   function transfer(address recipient, uint256 amount) external lockedtransfer(msg.sender, recipient) override returns (bool) {
    balances[msg.sender] = balances[msg.sender] - amount;
    balances[recipient] = balances[recipient] + amount;
 
