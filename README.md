@@ -28,16 +28,9 @@ Add the abstract contract "ERC20SecurityExtension" to your contract and add the 
     
 and so:
 ```solidity
-    function transferFrom(address sender, address recipient, uint256 amount) external lockedtransfer(msg.sender, amount, sender, recipient) override returns (bool) {
-    require(allowances[sender][msg.sender] >= amount);
-
-    allowances[sender][msg.sender] - amount;
-
-    balances[msg.sender] = balances[sender] - amount;
-    balances[recipient] = balances[recipient] + amount;
-                
-    emit Transfer(sender, recipient, amount);
-    return true;
-
-}
+    function approve(address spender, uint256 value) external lockedtransfer(msg.sender, spender) override returns (bool) {
+        allowances[msg.sender][spender] = allowances[msg.sender][spender] + value;
+        emit Approval(msg.sender, spender, value);
+        return true;
+    }
 ```
