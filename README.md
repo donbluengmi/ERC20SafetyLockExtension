@@ -40,9 +40,14 @@ This extension is designed to be token specific, meaning the code will be redepl
 Since every new token deployment comes with a deployment of the lockextension`s code, events (only useful for frontends) have been left out from the contract.
 
 -The lockaddress can decide to lock and unlock the holders tokens at will.
--Both the lockaddress and the holder can request immunity for a specific address, which if both agreed on, will now forever be able to receive tokens from the token holder wallet, thorugh either transferFrom or transfer, no matter if the tokens are locked or not.
 
-=> If an attacker gets ahold of the holders wallet he cant transfer tokens to his wallet, he could though, if both the lockaddress and the holder had earlier agreed to give an address immunity, transfer address to that address. The attacker could approve every address he wanted to, but if the tokens are still locked by the lockaddress, couldnt transfer tokens to a recipient, that doesnt have immunity. The attacker could also request both a new lockaddress and immunity for an address, but that wouldnt have any effect, until the lockaddress had agreed on these changes. The attacker also cant block any transfers or requests for immunity addresses, since once initiated by the actual token holder those changes cant be reverted (Meaning, requests for immunity for an address cant be taken back).
-=> If an attacker gets ahold of the lockaddress`s wallet he can 
+-Both the lockaddress and the holder can request immunity for a specific address, which if both agreed on, will now forever be able to receive tokens from the token holder wallet, thorugh either transferFrom or transfer, no matter if the tokens are locked or not. The request on both sides is not revertable.
 
--Both the holder and the lockaddress can set 
+-Both the lockaddress and the holder can request a new lockaddress and if one party has already requested a new lockaddress, the other party can change the lockaddress directly. The request on both sides is revertable.
+
+=> If an attacker gets ahold of the holders wallet he cant transfer tokens to his wallet, he could though, if both the lockaddress and the holder had earlier agreed to give an address immunity, transfer address to that address.
+The attacker could approve every address he wanted to, but if the tokens are still locked by the lockaddress, couldnt transfer tokens to a recipient, that doesnt have immunity.
+The attacker could also request both a new lockaddress and immunity for an address, but that wouldnt have any effect, until the lockaddress had agreed on these changes. The attacker also cant block any transfers or requests for immunity addresses, since once initiated by the actual token holder those changes cant be reverted (Meaning, requests for immunity for an address cant be taken back).
+
+=> If an attacker gets ahold of the lockaddress`s wallet he can unlock the hodlers tokens, but if the holders wallet isnt under the control of an attacker, that wont, of course, have any direct effect on the holders tokens.
+Just like an attacker with access to the holders wallet could, an attacker with access to the lockaddress`s wallet would be able to request immunity for an address or a new lockaddress for the holder, but just like for the holders wallet, that wont have any actual effect, unless the token holder agrees on these changes. An attacker also wouldnt be able to block the two crucial functions in the scenario of an attack, changing the lockaddress and setting an immune address, since the request for an immune address cant be reverted and, if the holder has already requested an lockaddress change, calling the function to change the lockaddress for the lockaddress by the lockaddress will be final.
