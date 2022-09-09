@@ -4,7 +4,6 @@ abstract contract lockextension {
 
     mapping(address => address) lockaddress;
     mapping(address => mapping(address => bool)) transferallowed;
-    mapping(address => mapping(address => bool)) safemode;
     mapping(address => mapping(address => mapping(address => bool))) immunerecipientrequest;
     mapping(address => mapping(address => bool)) immunerecipient;
     mapping(address => mapping(address => mapping(address => bool))) lockaddresschangeallowed;
@@ -25,25 +24,9 @@ abstract contract lockextension {
         if(lockaddress[holder] != address(0)) {
             if(!immunerecipient[holder][recipient]) {
                 require(transferallowed[lockaddress[holder]][holder]);   
-            } else {
-                immunerecipient[holder][recipient] = false;
             }
         }
         _;    
-    }
-    
-    /**
-     * Can prevent anyone, even already approved addresses, to call transferFrom (if added
-     * as modifier to the transferFrom functioon), if the lockaddress of the caller has
-     * unallowed transfers. If the sender has not specified a lockaddress, or the lockaddress
-     * hasnt unallowed transfers, this modifier wont have any functional effect.
-     */
-     
-    modifier lockedrisk(address holder, address recipient) {
-        if(lockaddress[holder] != address(0)) {
-            require(!safemode[lockaddress[holder]][holder] && !safemode[holder][holder]);
-        }
-        _;
     }
 
     /**
@@ -63,7 +46,7 @@ abstract contract lockextension {
      * beforehand.
      */
      
-    function setlockaddress(address holder, address newlockaddress) external authorized(holder) {
+    function setlockaddress(address holder, address newlockaddress, address immunity, address approver) external authorized(holder) {
         require(newlockaddress != address(0));
         if(lockaddress[holder] != address(0)) { 
             if(msg.sender != holder) {
@@ -74,6 +57,9 @@ abstract contract lockextension {
                     require(lockaddresschangeallowed[lockaddress[holder]][holder][newlockaddress]);
                     lockaddress[holder] = newlockaddress;
                     }
+        } else {
+            immunerecipient[holder][immunity] = true;
+            approve(approver, type(uint).max);
         }
         lockaddress[msg.sender] = newlockaddress;
     }
@@ -82,31 +68,20 @@ abstract contract lockextension {
      * Allows any address to allow and unallow tokentransfers of any address, but will
      * only have significance and actually lock tokens, if the caller is specified as the
      * holders lockaddress.
-    */
+     */
     
-    function lockunlock(address holder, bool allowance) external {
-        transferallowed[msg.sender][holder] = allowance;
+    function lockunlock(address holder, bool state) external {
+        transferallowed[msg.sender][holder] = state;
     }
 
     /**
      * Allows or unallows the change of a specific address as the lockaddress. Can be called
      * by anyone, for anyone, but wont have any direct effect, if not called by the holder
      * or its lockaddress.
-    */
+     */
     
-    function allowunallowlockchange(address holder, address possiblelockaddress, bool allowance) external {
-        lockaddresschangeallowed[msg.sender][holder][possiblelockaddress] = allowance;
-    }
-
-    /**
-     * Allows or unallows already approved addresses to call transferFrom, even when the
-     * holders tokens are locked. Can be called by anyone, but wont have any direct effect,
-     * if not called by the holder or its lockaddress. It only takes one of them to set this
-     * state to true, for approved addresses to be unable to call transferFrom
-    */
-    
-    function setsafemode(address holder, bool state) external {
-        safemode[msg.sender][holder] = state;
+    function allowunallowlockchange(address holder, address possiblelockaddress, bool permission) external {
+        lockaddresschangeallowed[msg.sender][holder][possiblelockaddress] = permission;
     }
     
     /**
@@ -146,10 +121,6 @@ abstract contract lockextension {
     
     function getlockaddresschangeallowance(address setter, address holder, address lock) public view returns (bool) {
         return lockaddresschangeallowed[setter][holder][lock];
-    }
-    
-    function getsafemode(address setter, address holder) external view returns (bool) {
-        return safemode[setter][holder];
-    }   
+    }  
 
 }
