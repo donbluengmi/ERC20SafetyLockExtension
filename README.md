@@ -124,6 +124,7 @@ Add the mappings to your contract...
     }
 ```
 Sadly even simpler implementation is not possible, since the setlockadrress function relies on calling the ERC20 approve function, so that inheritance from a parent contract would not be possible.
+Explanation on all the functions can be found in the solidity file.
 
 ## Design Choices and detailed Explanation
 
