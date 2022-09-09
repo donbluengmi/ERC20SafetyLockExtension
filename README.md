@@ -1,6 +1,6 @@
 # ERC20SecurityLockExtension
 
-An abstract contract, that can be implemented to any ERC20 token, to protect tokens from wallet hacks. The idea behind this extension is to bring the protection, the use of multi signature wallet brings, but also keep the flexibility single signature wallets have, to the hodlers of ERC20 tokens.
+An code snippet, that can be implemented to any ERC20 token, to protect tokens from wallet hacks. The idea behind this extension is to bring the protection, the use of multi signature wallet brings, but also keep the flexibility single signature wallets have, to the holders of ERC20 tokens. 
 
 ## Thought behind it
 
@@ -15,7 +15,23 @@ This extension largely fails its cause, if users arent specifically cautious usi
 
 ## Implementation
 
-Add the abstract contract "ERC20SecurityExtension" to your contract and add the modifier "lockedtransfer" in the functions transfer and transferfrom like so:
+Add the mappings to your contract...
+
+```solidity
+```
+
+...the modifiers...
+```solidity
+```
+
+...the state changing functions...
+```solidity
+```
+
+...the read functions...
+```solidity
+```
+
 ```solidity
    function transfer(address recipient, uint256 amount) external lockedtransfer(msg.sender, recipient) override returns (bool) {
    balances[msg.sender] = balances[msg.sender] - amount;
@@ -26,7 +42,7 @@ Add the abstract contract "ERC20SecurityExtension" to your contract and add the 
 }
 ```
     
-and so:
+...and add the modifier to bot the transfer and transferfrom function like so:
 ```solidity
     function approve(address spender, uint256 value) external lockedtransfer(msg.sender, spender) override returns (bool) {
         allowances[msg.sender][spender] = allowances[msg.sender][spender] + value;
@@ -34,6 +50,8 @@ and so:
         return true;
     }
 ```
+Sadly even simpler implementation is not possible, since the setlockadrress function relies on calling the ERC20 approve function, so that inheritance from a parent contract would not be possible.
+
 ## Design Choices and detailed Explanation
 
 This extension is designed to be token specific, meaning the code will be redeployed with every token. This is, so that every freshly bought token at first can be handled in complete flexibilty. If a specific token is, at the time of buying, or has, later on become a token for monetary significance for the holder, the effort to individually lock it, shouldnt be as much of a problem to otherwise (if the lockaddress would be centralised organized for every token), always having to unlock tokens to transfer them after getting ahold of them.
