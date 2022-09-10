@@ -128,7 +128,7 @@ Explanation on all the functions can be found in the solidity file.
 
 ## Design Choices and detailed Explanation
 
-This extension is designed to be token specific, meaning the code will be redeployed with every token. This is, so that every freshly bought token at first can be handled in complete flexibilty. If a specific token is, at the time of buying, or has, later on become a token for monetary significance for the holder, the effort to individually lock it, shouldnt be as much of a problem to otherwise (if the lockaddress would be centralised organized for every token), always having to unlock tokens to transfer them after getting ahold of them.
+The lock is designed to be token specific, meaning the code will be redeployed with every token. This is, so that every freshly bought token at first can be handled in complete flexibilty. If a specific token is, at the time of buying, or has, later on become a token for monetary significance for the holder, the effort to individually lock it, shouldnt be as much of a problem to otherwise (if the lockaddress would be centralised organized for every token), always having to unlock tokens to transfer them after getting ahold of them.
 Since every new token deployment comes with a deployment of the lockextension`s code, events (only useful for frontends) have been left out from the contract.
 
 -The lockaddress can decide to lock and unlock the holders tokens at will.
