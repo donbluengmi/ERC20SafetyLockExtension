@@ -1,6 +1,6 @@
 # ERC20SecurityLockExtension
 
-A code snippet, that can be implemented to any ERC20 token, to protect tokens from wallet hacks. The idea behind this extension is to bring the protection, the use of multi signature wallet brings, but also keep the flexibility single signature wallets have, to the holders of ERC20 tokens. Only reasonable to use with high tax tokens, since the change to a multi signature wallet when already holding low/no tax tokens, is generally more efficient.
+A contract, that any ERC20 token can inherit from, to protect tokens from wallet hacks. The idea behind this extension is to bring the protection, the use of multi signature wallet brings, but also keep the flexibility single signature wallets have, to the holders of ERC20 tokens. Only reasonable to use with high tax tokens, since the change to a multi signature wallet when already holding low/no tax tokens, is generally more efficient.
 
 ## Thought behind it
 
