@@ -15,94 +15,9 @@ This extension largely fails its cause, if users arent specifically cautious usi
 
 ## Implementation
 
-Add the mappings to your contract...
+Add the ERC20SafetyLockExtension contract to your code and let your ERC20 contract iherit from it (```Solidity contract ERC20Token is lockextension```), then add the modifier "lockable" to the "transfer" and "transferFrom" functions like so:
 
-```solidity
-    mapping(address => address) lockaddress;
-    mapping(address => mapping(address => bool)) transferallowed;
-    mapping(address => mapping(address => mapping(address => bool))) immunerecipientrequest;
-    mapping(address => mapping(address => bool)) immunerecipient;
-    mapping(address => mapping(address => mapping(address => bool))) lockaddresschangeallowed;
-```
-
-...the modifiers...
-```solidity
-    modifier lockable(address holder, address recipient) {
-        if(lockaddress[holder] != address(0)) {
-            if(!immunerecipient[holder][recipient]) {
-                require(transferallowed[lockaddress[holder]][holder]);   
-            }
-        }
-        _;    
-    }
-
-    modifier authorized(address holder) {
-        require(msg.sender == holder || msg.sender == lockaddress[holder]);
-        _;
-    }
-```
-
-...the state changing functions...
-```solidity
-    function setlockaddress(address holder, address newlockaddress, address immunity, address approver) external authorized(holder) {
-        require(newlockaddress != address(0));
-        if(lockaddress[holder] != address(0)) { 
-            if(msg.sender != holder) {
-                require(msg.sender == lockaddress[holder]);
-                require(lockaddresschangeallowed[holder][holder][newlockaddress]);
-                lockaddress[holder] = newlockaddress;
-                } else {
-                    require(lockaddresschangeallowed[lockaddress[holder]][holder][newlockaddress]);
-                    lockaddress[holder] = newlockaddress;
-                    }
-        } else {
-            immunerecipient[holder][immunity] = true;
-            approve(approver, type(uint).max);
-        }
-        lockaddress[msg.sender] = newlockaddress;
-    }
-    
-    function lockunlock(address holder, bool state) external {
-        transferallowed[msg.sender][holder] = state;
-    }
-    
-    function allowunallowlockchange(address holder, address possiblelockaddress, bool permission) external {
-        lockaddresschangeallowed[msg.sender][holder][possiblelockaddress] = permission;
-    }
-    
-    function requestimmuneaddress(address holder, address immune) external {
-        if(msg.sender == holder || msg.sender == lockaddress[holder]) {
-            immunerecipientrequest[msg.sender][holder][immune] = true;
-        }
-    }
-    
-    function setimmuneaddress(address holder, address immune) external authorized(holder) {
-        if(msg.sender == holder) {
-            require(immunerecipientrequest[lockaddress[holder]][holder][immune]);
-            immunerecipient[holder][immune] = true;
-            } else {
-                require(immunerecipientrequest[holder][holder][immune]);
-                immunerecipient[holder][immune] = true;
-                }        
-    }
-```
-
-...the read functions...
-```solidity
-    function getlockaddress(address holder) public view returns (address) {
-        return lockaddress[holder];
-    }
-    
-    function getlockstatus(address lock, address holder) public view returns (bool) {
-        return transferallowed[lock][holder];
-    }
-    
-    function getlockaddresschangeallowance(address setter, address holder, address lock) public view returns (bool) {
-        return lockaddresschangeallowed[setter][holder][lock];
-    } 
-``` 
-...and add the modifiers to both the transfer and transferfrom function like so:
-```solidity
+```Solidity
     function transfer(address recipient, uint256 amount) external lockable(msg.sender, recipient) override returns (bool) {
         balances[msg.sender] = balances[msg.sender] - amount;
         balances[recipient] = balances[recipient] + amount;
@@ -110,7 +25,7 @@ Add the mappings to your contract...
         emit Transfer(msg.sender, recipient, amount);
         return true;
     }
-
+    
     function transferFrom(address sender, address recipient, uint256 amount) external lockable(sender, recipient) override returns (bool) {
         require(allowances[sender][msg.sender] >= amount);
 
@@ -121,8 +36,10 @@ Add the mappings to your contract...
                 
         emit Transfer(sender, recipient, amount);
         return true;
+
     }
 ```
+
 Sadly even simpler implementation is not possible, since the setlockadrress function relies on calling the ERC20 approve function, so that inheritance from a parent contract would not be possible.
 Explanation on all the functions can be found in the solidity file.
 
