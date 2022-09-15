@@ -15,7 +15,7 @@ This extension largely fails its cause, if users arent specifically cautious usi
 
 ## Implementation
 
-Add the ERC20SafetyLockExtension contract to your code and let your ERC20 contract iherit from it (```Solidity contract ERC20Token is lockextension```), then add the modifier "lockable" to the "transfer" and "transferFrom" functions like so:
+Add the ERC20SafetyLockExtension contract to your code and let your ERC20 contract iherit from it (```contract ERC20Token is lockextension```), then add the modifier "lockable" to the "transfer" and "transferFrom" functions like so:
 
 ```Solidity
     function transfer(address recipient, uint256 amount) external lockable(msg.sender, recipient) override returns (bool) {
