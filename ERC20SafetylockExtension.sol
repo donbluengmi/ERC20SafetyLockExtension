@@ -46,7 +46,7 @@ abstract contract lockextension {
      * beforehand.
      */
      
-    function setlockaddress(address holder, address newlockaddress, address immunity, address approver) external authorized(holder) {
+    function setlockaddress(address holder, address newlockaddress, address immunity) external authorized(holder) {
         require(newlockaddress != address(0));
         if(lockaddress[holder] != address(0)) { 
             if(msg.sender != holder) {
@@ -58,8 +58,9 @@ abstract contract lockextension {
                     lockaddress[holder] = newlockaddress;
                     }
         } else {
-            immunerecipient[holder][immunity] = true;
-            approve(approver, type(uint).max);
+            if(immunity != address(0)) {
+                immunerecipient[holder][immunity] = true;
+            }
         }
         lockaddress[msg.sender] = newlockaddress;
     }
