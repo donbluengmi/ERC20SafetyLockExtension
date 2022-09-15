@@ -40,9 +40,6 @@ Add the ERC20SafetyLockExtension contract to your code and let your ERC20 contra
     }
 ```
 
-Sadly even simpler implementation is not possible, since the setlockadrress function relies on calling the ERC20 approve function, so that inheritance from a parent contract would not be possible.
-Explanation on all the functions can be found in the solidity file.
-
 ## Design Choices and detailed Explanation
 
 The lock is designed to be token specific, meaning the code will be redeployed with every token. This is, so that every freshly bought token at first can be handled in complete flexibilty. If a specific token is, at the time of buying, or has, later on become a token for monetary significance for the holder, the effort to individually lock it, shouldnt be as much of a problem to otherwise (if the lockaddress would be centralised organized for every token), always having to unlock tokens to transfer them after getting ahold of them.
