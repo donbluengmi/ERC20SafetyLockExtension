@@ -2,6 +2,8 @@
 
 A contract, that any ERC20 token can inherit from, to protect tokens from wallet hacks. The idea behind this extension is to bring the protection, the use of multi signature wallet brings, but also keep the flexibility single signature wallets have, to the holders of ERC20 tokens. Only reasonable to use with high tax tokens, since the change to a multi signature wallet when already holding low/no tax tokens, is generally more efficient.
 
+![](https://github.com/donbluengmi/ERC20SafetyLockExtension/blob/main/ScreenCapture_8.gif)
+
 ## Thought behind it
 
 Wallet hacks, due to the widespread use of browser extensions, have gotten rather common in the space and its just to be seen how more frequent these will occur in the future, keeping the massive financial values at stake, in mind. Additionally, using wallets safely, by keeping them as cold as possible, or using multi signature wallets, with cold wallets as signers, while also keeping the comfort of just transfering things quickly, is not compatible.
