@@ -9,15 +9,9 @@ abstract contract lockextension {
     mapping(address => mapping(address => mapping(address => bool))) lockaddresschangeallowed;
 
     /**
-     * Prevents transfers and approvals, if the lockaddress of the caller has unallowed
-     * transfers. If the sender has not specified a lockaddress, or the lockddress hasnt
-     * unallowed transfers, this modifier wont have any functional effect. Note, that
-     * already approved addresses can still transfer tokens through transferfrom, as long
-     * as safemode (following modifier) isnt activated by either the holder or the
-     * lockaddress, for the holder. Recipients, that have been given immunity, by holder
-     * and lockaddress in accordance, can always receive tokens. If tokens have been
-     * transferred to an immune address, that address`s immunity is gone and has to be
-     * renewed.
+     * Prevents transfers, if the lockaddress of the caller has unallowed transfers. If
+     * the sender has not specified a lockaddress, or the lockddress hasnt unallowed 
+     * transfers, this modifier wont have any functional effect.
      */
 
     modifier lockable(address holder, address recipient) {
@@ -43,7 +37,8 @@ abstract contract lockextension {
      * Sets the lockaddress. If a address is already specified as the lockaddress, that
      * address will have to allow this change beforehand, or this function will have
      * to be called by the lockaddress, while the holders address allowed the change
-     * beforehand.
+     * beforehand. If the caller doesnt explicitly decide against setting an immune address
+     * an immune address wil be set aswell.
      */
      
     function setlockaddress(address holder, address newlockaddress, address immunity) external authorized(holder) {
